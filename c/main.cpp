@@ -21,7 +21,8 @@ int main (int, char**) {
     return 1;
   }
 
-  win = SDL_CreateWindow("Mandelbrot set", 100, 100,
+  win = SDL_CreateWindow("Mandelbrot set",
+                         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                          SCREEN_WIDTH, SCREEN_HEIGHT,
                          SDL_WINDOW_SHOWN);
   if (win == nullptr) {
