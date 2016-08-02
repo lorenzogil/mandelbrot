@@ -8,10 +8,10 @@ EXE = mandelbrot
 
 all: $(EXE)
 
-$(EXE): main.o
+$(EXE): mandelbrot.o
 	$(CXX) $< $(LDFLAGS) -o $@
 
-main.o: main.cpp
+mandelbrot.o: mandelbrot.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 clean:
