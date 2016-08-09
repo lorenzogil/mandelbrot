@@ -1,4 +1,3 @@
-#include <iostream>
 #include <math.h>
 #include <SDL2/SDL.h>
 
@@ -13,8 +12,8 @@ typedef struct {
 } rgb;
 
 
-void log_sdl_error(const std::string &msg) {
-  std::cout << msg << " error: " << SDL_GetError() << std::endl;
+void log_sdl_error(const char *msg) {
+  printf("%s error: %s\n", msg, SDL_GetError());
 }
 
 
@@ -112,7 +111,7 @@ int main (int, char**) {
                          SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                          SCREEN_WIDTH, SCREEN_HEIGHT,
                          SDL_WINDOW_SHOWN);
-  if (win == nullptr) {
+  if (win == NULL) {
     log_sdl_error("SDL_CreateWindow");
     SDL_Quit();
     return 1;
@@ -121,7 +120,7 @@ int main (int, char**) {
   ren = SDL_CreateRenderer(win, -1, (SDL_RENDERER_ACCELERATED |
                                      SDL_RENDERER_PRESENTVSYNC));
 
-  if (ren == nullptr) {
+  if (ren == NULL) {
     SDL_DestroyWindow(win);
     log_sdl_error("SDL_CreateRenderer");
     SDL_Quit();

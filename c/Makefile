@@ -1,9 +1,9 @@
-CXX = g++
+CXX = gcc
 
 SDL_LIB = `sdl2-config --libs`
 SDL_INCLUDE = `sdl2-config --cflags`
-CXXFLAGS = -Wall -c -std=c++11 $(SDL_INCLUDE)
-LDFLAGS = $(SDL_LIB)
+CXXFLAGS = -Wall -c $(SDL_INCLUDE)
+LDFLAGS = $(SDL_LIB) -lm
 EXE = mandelbrot
 
 all: $(EXE)
