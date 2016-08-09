@@ -4,6 +4,7 @@
 
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 600;
+const int MAX_ITERATIONS = 128;
 
 typedef struct {
   double r;
@@ -51,7 +52,7 @@ rgb gradient (double pos) {
 }
 
 
-void render_mandelbrot(SDL_Renderer *ren, double viewport_size, double center_x, double center_y, int max_iterations) {
+void render_mandelbrot(SDL_Renderer *ren, rgb *colors, double viewport_size, double center_x, double center_y) {
   int i, j, index;
   double x, y, z, zi, newz, newzi, smooth;
   rgb color;
@@ -65,7 +66,7 @@ void render_mandelbrot(SDL_Renderer *ren, double viewport_size, double center_x,
       index = 0;
       z = 0.0;
       zi = 0.0;
-      while (index < max_iterations) {
+      while (index < MAX_ITERATIONS) {
         newz = (z * z) - (zi * zi) + x;
         newzi = 2 * z * zi + y;
         z = newz;
@@ -75,12 +76,12 @@ void render_mandelbrot(SDL_Renderer *ren, double viewport_size, double center_x,
         }
         index++;
       }
-      if (index == 0 || index >= max_iterations) {
+      if (index == 0 || index >= MAX_ITERATIONS) {
         SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
 
       } else {
         smooth = index + 1 - log(log(sqrt(z * z + zi * zi))) / log(2);
-        color = gradient(smooth / (double)max_iterations);
+        color = colors[(int)smooth];
         SDL_SetRenderDrawColor(ren, color.r, color.g, color.b, 255);
       }
       SDL_RenderDrawPoint(ren, i, j);
@@ -99,7 +100,8 @@ int main (int, char**) {
   double viewport_size;
   double x;
   double y;
-  int max_iterations;
+  int i;
+  rgb colors[MAX_ITERATIONS];
 
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     log_sdl_error("SDL_Init");
@@ -126,11 +128,13 @@ int main (int, char**) {
     return 1;
   }
 
+  for (i=0; i < MAX_ITERATIONS; i++) {
+    colors[i] = gradient((float)i / MAX_ITERATIONS);
+  }
+
   viewport_size = 4.0;
   x = 0.0;
   y = 0.0;
-  max_iterations = 128;
-  render_mandelbrot(ren, viewport_size, x, y, max_iterations);
   while (!quit) {
     while (SDL_PollEvent(&event)) {
       if (event.type == SDL_QUIT) {
@@ -163,9 +167,8 @@ int main (int, char**) {
         quit = true;
       }
     }
-    render_mandelbrot(ren, viewport_size, x, y, max_iterations);
+    render_mandelbrot(ren, colors, viewport_size, x, y);
     viewport_size = 0.9 * viewport_size;
-    max_iterations++;
   }
 
   SDL_DestroyRenderer(ren);
