@@ -1,4 +1,5 @@
 #include <math.h>
+#include <stdbool.h>
 #include <SDL2/SDL.h>
 
 const int SCREEN_WIDTH = 600;
@@ -91,7 +92,7 @@ void render_mandelbrot(SDL_Renderer *ren, rgb *colors, double viewport_size, dou
 }
 
 
-int main (int, char**) {
+int main (int argc, char **argv) {
   SDL_Window *win;
   SDL_Renderer *ren;
   SDL_Event event;

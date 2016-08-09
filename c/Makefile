@@ -11,7 +11,7 @@ all: $(EXE)
 $(EXE): mandelbrot.o
 	$(CXX) $< $(LDFLAGS) -o $@
 
-mandelbrot.o: mandelbrot.cpp
+mandelbrot.o: mandelbrot.c
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 clean:
