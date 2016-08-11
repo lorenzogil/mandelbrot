@@ -1,5 +1,3 @@
-# TODO: write setup.py to install PySDL2
-
 from math import floor, log, sqrt
 
 import sdl2
