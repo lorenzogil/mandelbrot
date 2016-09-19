@@ -99,7 +99,7 @@ fn main () {
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
 
-    let window = video_subsystem.window("Mandelbrot", SCREEN_WIDTH, SCREEN_HEIGHT)
+    let window = video_subsystem.window("Mandelbrot Rust", SCREEN_WIDTH, SCREEN_HEIGHT)
         .position_centered()
         .opengl()
         .build()
@@ -112,8 +112,8 @@ fn main () {
         colors[i] = gradient((i as f64) / (MAX_ITERATIONS as f64));
     }
 
-    let (x, y) = (0.0_f64, 0.0_f64);
-    let viewport_size = 4.0_f64;
+    let (mut x, mut y) = (0.0_f64, 0.0_f64);
+    let mut viewport_size = 4.0_f64;
     let mut event_pump = sdl_context.event_pump().unwrap();
 
     'running: loop {
@@ -122,9 +122,22 @@ fn main () {
                 Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
                     break 'running
                 },
+                Event::KeyDown { keycode: Some(Keycode::Up), .. } => {
+                    y = y - 0.1_f64 * viewport_size;
+                },
+                Event::KeyDown { keycode: Some(Keycode::Down), .. } => {
+                    y = y + 0.1_f64 * viewport_size;
+                },
+                Event::KeyDown { keycode: Some(Keycode::Left), .. } => {
+                    x = x - 0.1_f64 * viewport_size;
+                },
+                Event::KeyDown { keycode: Some(Keycode::Right), .. } => {
+                    x = x + 0.1_f64 * viewport_size;
+                },
                 _ => {}
             }
         }
         render_mandelbrot(&mut renderer, colors, viewport_size, x, y);
+        viewport_size = 0.9 * viewport_size;
     }
 }
