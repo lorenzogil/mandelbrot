@@ -55,7 +55,7 @@ fn gradient (pos: f64) -> Color {
     }
 }
 
-fn render_mandelbrot(renderer: Renderer, colors: [Color; MAX_ITERATIONS], viewport_size: f64, center_x: f64, center_y: f64) {
+fn render_mandelbrot(renderer: &mut Renderer, colors: [Color; MAX_ITERATIONS], viewport_size: f64, center_x: f64, center_y: f64) {
     let mut index;
     let (mut x, mut y);
     let (mut z, mut zi, mut newz, mut newzi);
@@ -88,7 +88,7 @@ fn render_mandelbrot(renderer: Renderer, colors: [Color; MAX_ITERATIONS], viewpo
                 smooth = (index as f64) + 1.0 - (z * z + zi * zi).sqrt().log(2.0).log(2.0) / 2.0_f64.log(2.0);
                 renderer.set_draw_color(colors[smooth as usize]);
             }
-            renderer.draw_point(Point::new(i as i32, j as i32));
+            renderer.draw_point(Point::new(i as i32, j as i32)).unwrap();
         }
     }
     renderer.present();
@@ -125,6 +125,6 @@ fn main () {
                 _ => {}
             }
         }
-        render_mandelbrot(renderer, colors, viewport_size, x, y);
+        render_mandelbrot(&mut renderer, colors, viewport_size, x, y);
     }
 }
